@@ -1,14 +1,8 @@
--- Where the projects are run and are associated with geographic coordinates
-
--- =========================================
 -- CREATE DATABASE village_db;
--- =========================================
 
 -- USE village_db;
 
--- =========================================
 -- Create jurisdiction hierachy table
--- =========================================
 
 -- CREATE TABLE jurisdiction_hierarchy (
 --     id INTEGER NOT NULL PRIMARY KEY,
@@ -60,9 +54,7 @@
 -- (18, 'Bayaxaw', 'Village', 'Jowhar'),
 -- (19, 'Bayaxawo', 'Village', 'Jowhar')
 
--- =========================================
 -- Insert data into village_locations (replacing village name with jurisdiction_id)
--- =========================================
 
 -- INSERT INTO village_locations (village_id, jurisdiction_id, latitude, longitude, total_population)
 -- VALUES
@@ -81,9 +73,7 @@
 -- (13, 18, '2°44.768''', '45°29.727''', 3000),
 -- (14, 19, '2°44.768''', '45°29.926''', 7560)
 
--- =========================================
 -- Insert data into beneficiary_partner_data (replacing village name with jurisdiction_id)
--- =========================================
 
 -- INSERT INTO beneficiary_partner_data (partner_id, partner, jurisdiction_id, beneficiaries, beneficiary_type)
 -- VALUES	
@@ -125,9 +115,7 @@
 -- (36, 'CESVI', 12, 7519, 'Individuals')
 
 
--- =========================================
--- A. DISTRICT SUMMARY
--- =========================================
+-- District Summary
 
 -- CREATE OR REPLACE VIEW district_summary AS
 -- SELECT
@@ -171,9 +159,8 @@
 -- GROUP BY jh_district.name, jh_region.name /*Groups data by district and region for aggregation*/
 -- ORDER BY jh_region.name, jh_district.name; /*Sorts results by region first, then district*/
 
--- ===================================
--- B. PARTNER SUMMARY
--- ===================================
+-- Partner Summary
+
 -- "How many villages and districts does each partner organization work in?"
 
 -- CREATE VIEW partner_summary AS
@@ -181,7 +168,7 @@
 -- 	bpd.partner AS partner_name,
 --     COUNT(DISTINCT jh_village.name) AS villages_reached, -- Counts unique village names for each partner
 --     COUNT(DISTINCT jh_district.name) AS districts_reached -- Counts unique district names for each partner
---     
+     
 -- FROM beneficiary_partner_data bpd -- each row = one partner project
 -- JOIN jurisdiction_hierarchy jh_village 
 -- 	ON bpd.jurisdiction_id = jh_village.id -- Links beneficiary data to village information
@@ -189,18 +176,11 @@
 -- JOIN jurisdiction_hierarchy jh_district
 -- 	ON jh_village.parent = jh_district.name -- Links villages to their parent districts
 --     AND jh_district.level = 'District' 
---     
+
 -- GROUP BY bpd.partner -- Groups all records by partner organization
 -- ORDER by bpd.partner; -- Sorts results alphabetically by partner name
---     
--- ======================
--- Query District Summary
--- ======================
+
 
 -- SELECT * FROM district_summary;
-
--- ======================
--- Query Partner Summary  
--- ======================
 
 -- SELECT * FROM partner_summary;
